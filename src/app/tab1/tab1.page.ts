@@ -17,6 +17,7 @@ export class Tab1Page {
 
   constructor(private taskService:TasksService) {
     this.tasks = this.taskService.getTasks();
+    
   }
   public addTask(){
     this.taskService.addTask(this.task);

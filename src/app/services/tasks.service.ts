@@ -8,8 +8,6 @@ export class TasksService {
   private tasks: string[] = [];
 
   constructor() {
-    this.tasks.push("Tarea 1");
-    this.tasks.push("Tarea 2");
   }
 
   public getTasks():string[]{

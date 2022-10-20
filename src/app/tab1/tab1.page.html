@@ -20,10 +20,13 @@
       Lista de tareas
     </ion-title>
     <ion-col size="12">
+      <ion-text class="ion-text-center ion-margin-top" color="medium" *ngIf="tasks.length==0">
+        <h2>No hay tareas agregadas</h2>
+      </ion-text>
       <ion-list>
         <ion-item-sliding *ngFor="let task of tasks;let i = index">
           <ion-item>
-            <ion-label>{{task}}</ion-label>
+            <ion-label>{{i+1}}.- {{task}}</ion-label>            
           </ion-item>
           <ion-item-options side="end" (ionSwipe)="removeTask(i)">
               <ion-item-option expandable color="danger" (click)="removeTask(i)">
