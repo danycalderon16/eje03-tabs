@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import Swal from 'sweetalert2';
 import { ToastController } from '@ionic/angular';
 import { TasksService } from '../services/tasks.service';
 
@@ -26,7 +25,17 @@ export class Tab1Page {
     const toast = await this.toastController.create({
       message,
       duration: 1000,
-      position
+      position,
+      cssClass: 'custom-toast',
+      buttons: [
+        {
+          text: 'Deshacer',
+          handler: () => {               
+            this.tasks.pop()
+            this.tasks = this.taskService.getTasks();
+          }
+        }
+      ]
     });
 
     await toast.present();
