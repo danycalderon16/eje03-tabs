@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Task } from '../models/task';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
 
-  private tasks: string[] = [];
+  private tasks: Task[] = [];
 
   constructor() {
+    this.tasks.push({task:"Ejemplo",completed:false})
+    this.tasks.push({task:"Ejemplo",completed:true})
   }
 
-  public getTasks():string[]{
+  public getTasks():Task[]{
     return this.tasks;
   }
 
-  public addTask(task:string){
+  public addTask(task:Task){
     this.tasks.push(task);
   }
 

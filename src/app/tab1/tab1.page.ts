@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { Task } from '../models/task';
 import { TasksService } from '../services/tasks.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class Tab1Page {
   // public photos = [];
   // private lorem = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam tempore eius repellat a, nihil commodi vero molestias exercitationem suscipit porro veritatis voluptate labore dolorem numquam, fugit, at corporis modi eveniet."
 
-  public tasks: string[];
+  public tasks: Task[];
   public task: string;
 
   constructor(private taskService:TasksService,private toastController: ToastController) {
@@ -42,7 +43,8 @@ export class Tab1Page {
   }
   public addTask(){
     let count = this.tasks.length;
-    this.taskService.addTask(this.task);
+    const aux:Task = {task:this.task, completed:false}
+    this.taskService.addTask(aux);
     this.tasks = this.taskService.getTasks();
     this.task = "";
     if(count === (this.tasks.length-1)){
@@ -51,6 +53,8 @@ export class Tab1Page {
       this.presentToast('bottom','Hubo un error al agregar la tarea');
     }
     this.myInput.setFocus();
+    console.log(this.tasks);
+    
   }
 
   public removeTask(pos:number){
@@ -58,5 +62,9 @@ export class Tab1Page {
       this.taskService.removeTask(pos);
       this.tasks = this.taskService.getTasks()
     }
+  }
+
+  public completeTask(pos:number){
+    this.tasks[pos].completed = true;
   }
 }
