@@ -25,7 +25,7 @@ export class Tab1Page {
   async presentToast(position: 'top' | 'middle' | 'bottom', message:string) {
     const toast = await this.toastController.create({
       message,
-      duration: 1000,
+      duration: 1500,
       position,
       cssClass: 'custom-toast',
       buttons: [
@@ -37,6 +37,16 @@ export class Tab1Page {
           }
         }
       ]
+    });
+
+    await toast.present();
+  }
+  async toastCompleted(position: 'top' | 'middle' | 'bottom', message:string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 1500,
+      position,
+      cssClass: 'custom-toast',
     });
 
     await toast.present();
@@ -65,6 +75,11 @@ export class Tab1Page {
   }
 
   public completeTask(pos:number){
-    this.tasks[pos].completed = true;
+    if(this.tasks[pos].completed === true){
+      this.toastCompleted('bottom','La tarea ya está marcada como completada')
+    }else{
+      this.tasks[pos].completed = true;
+      this.toastCompleted('bottom','Tarea marcada como completada con éxito')
+    }
   }
 }
