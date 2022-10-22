@@ -1,4 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
+import Swal from 'sweetalert2';
+import { ToastController } from '@ionic/angular';
 import { TasksService } from '../services/tasks.service';
 
 @Component({
@@ -15,16 +17,31 @@ export class Tab1Page {
   public tasks: string[];
   public task: string;
 
-  constructor(private taskService:TasksService) {
+  constructor(private taskService:TasksService,private toastController: ToastController) {
     this.tasks = this.taskService.getTasks();
     
   }
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', message:string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 1000,
+      position
+    });
+
+    await toast.present();
+  }
   public addTask(){
+    let count = this.tasks.length;
     this.taskService.addTask(this.task);
     this.tasks = this.taskService.getTasks();
-    this.task = ""
-    console.log(this.tasks);
-    this.myInput.setFocus()
+    this.task = "";
+    if(count === (this.tasks.length-1)){
+      this.presentToast('bottom','Tarea agregda exitosamente');
+    }else{
+      this.presentToast('bottom','Hubo un error al agregar la tarea');
+    }
+    this.myInput.setFocus();
   }
 
   public removeTask(pos:number){
