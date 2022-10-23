@@ -22,7 +22,7 @@ export class Tab1Page {
     
   }
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', message:string) {
+  async presentToast(position: 'top' | 'middle' | 'bottom', message:string,callback) {
     const toast = await this.toastController.create({
       message,
       duration: 1500,
@@ -32,8 +32,7 @@ export class Tab1Page {
         {
           text: 'Deshacer',
           handler: () => {               
-            this.tasks.pop()
-            this.tasks = this.taskService.getTasks();
+            callback();
           }
         }
       ]
@@ -58,9 +57,12 @@ export class Tab1Page {
     this.tasks = this.taskService.getTasks();
     this.task = "";
     if(count === (this.tasks.length-1)){
-      this.presentToast('bottom','Tarea agregda exitosamente');
+      this.presentToast('bottom','Tarea agregda exitosamente', () => {
+        this.tasks.pop()
+        this.tasks = this.taskService.getTasks();
+      });
     }else{
-      this.presentToast('bottom','Hubo un error al agregar la tarea');
+      this.presentToast('bottom','Hubo un error al agregar la tarea',()=>{});
     }
     this.myInput.setFocus();
     console.log(this.tasks);
@@ -69,8 +71,13 @@ export class Tab1Page {
 
   public removeTask(pos:number){
     if(confirm('¿Está seguro de borrar esta tarea?')){
-      this.taskService.removeTask(pos);
+      const taskRemoved = this.taskService.removeTask(pos);
       this.tasks = this.taskService.getTasks()
+      this.presentToast('bottom','Se elimino la tarea corretamente',()=>{
+        this.tasks.splice(pos,0,taskRemoved[0]);
+        this.tasks = this.taskService.getTasks();
+      }
+      );
     }
   }
 
