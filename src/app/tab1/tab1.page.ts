@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Task } from '../models/task';
 import { TasksService } from '../services/tasks.service';
 
@@ -17,9 +17,39 @@ export class Tab1Page {
   public tasks: Task[];
   public task: string;
 
-  constructor(private taskService:TasksService,private toastController: ToastController) {
+  constructor(private taskService:TasksService,private toastController: ToastController,private alertController: AlertController) {
     this.tasks = this.taskService.getTasks();
     
+  }
+
+  async removeTask(pos:number) {
+    const alert = await this.alertController.create({
+      header: '¿Está seguro de borrar esta tarea?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            
+          },
+        },
+        {
+          text: 'Sí',
+          role: 'confirm',
+          handler: () => {
+            const taskRemoved = this.taskService.removeTask(pos);
+            this.tasks = this.taskService.getTasks()
+            this.presentToast('bottom','Se elimino la tarea corretamente',()=>{
+              this.tasks.splice(pos,0,taskRemoved[0]);
+              this.tasks = this.taskService.getTasks();
+            }
+            );
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', message:string,callback) {
@@ -66,19 +96,6 @@ export class Tab1Page {
     }
     this.myInput.setFocus();
     console.log(this.tasks);
-    
-  }
-
-  public removeTask(pos:number){
-    if(confirm('¿Está seguro de borrar esta tarea?')){
-      const taskRemoved = this.taskService.removeTask(pos);
-      this.tasks = this.taskService.getTasks()
-      this.presentToast('bottom','Se elimino la tarea corretamente',()=>{
-        this.tasks.splice(pos,0,taskRemoved[0]);
-        this.tasks = this.taskService.getTasks();
-      }
-      );
-    }
   }
 
   public completeTask(pos:number){
