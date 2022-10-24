@@ -9,10 +9,7 @@ export class TasksService {
   private tasks: Task[] = [];
 
   constructor() {
-    this.tasks.push({task:"Ejemplo 1",completed:false})
-    this.tasks.push({task:"Ejemplo 2",completed:false})
-    this.tasks.push({task:"Ejemplo 3",completed:true})
-    this.tasks.push({task:"Ejemplo 4",completed:true})
+  
   }
 
   public getTasks():Task[]{
