@@ -72,7 +72,6 @@ export class Tab1Page {
   }
   public addTask(){
     let count = this.tasks.length;
-    // console.log(1,count);    
     const aux: Task = { task: this.task, completed: false }
     this.taskService.addTask(aux).then(res=>{                  
       this.task = "";
@@ -80,25 +79,17 @@ export class Tab1Page {
     }).catch(err=>{
       this.presentToast('bottom', 'Hubo un error al agregar la tarea');
     });
-    // console.log(2,count);
-    
-    // this.taskService.getTasks().subscribe(res => {
-    // });
-    // if (count === (this.tasks.length - 1)) {
-    // } else {
-    // }
-    // this.myInput.setFocus();
-    // console.log(this.tasks);
   }
 
   public completeTask(id: string) {
     console.log(this.tasks);
-    this.taskService.completedTask(id);
+    this.taskService.completedTask(id).then(res=>{
+      this.toastCompleted('bottom', 'Tarea marcada como completada con éxito')
+    });
     // if (this.tasks[pos].completed === true) {
     //   this.toastCompleted('bottom', 'La tarea ya está marcada como completada')
     // } else {
     //   this.tasks[pos].completed = true;
-    //   this.toastCompleted('bottom', 'Tarea marcada como completada con éxito')
     // }
   }
 }

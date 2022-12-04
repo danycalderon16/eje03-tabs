@@ -13,11 +13,19 @@ export class Tab2Page {
 
   public tasks: Task[];
   public task: string;
+  public show = false;
 
   constructor(private taskService:TasksService,private toastController: ToastController) {
     this.taskService.getTasks().subscribe(res=>{
       this.tasks = res;
+      this.tasks.forEach(task => {
+        if(task.completed===true){
+          this.show = true;
+          return;
+        }
+      })
     });
+    
   }
 
   async toastCompleted(position: 'top' | 'middle' | 'bottom', message:string) {
@@ -31,13 +39,10 @@ export class Tab2Page {
     await toast.present();
   }
 
-  public incompleteTask(pos:number){
-    if(this.tasks[pos].completed === false){
-      this.toastCompleted('bottom','La tarea ya está marcada como incompletada')
-    }else{
-      this.tasks[pos].completed = false;
-      this.toastCompleted('bottom','Tarea marcada como incompleta')
-    }
+  public incompleteTask(id:string){
+    this.taskService.incompletedTask(id).then(res=>{
+      this.toastCompleted('bottom','Se ha marcado como incompleta correctamente');
+    })
   }
 
 }
