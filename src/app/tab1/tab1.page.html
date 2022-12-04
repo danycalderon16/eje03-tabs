@@ -7,6 +7,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-title class="ion-margin-top">
+    Lista de tareas incompletas
+  </ion-title>
   <ion-row>
     <ion-col size="12">
       <ion-item>
@@ -15,25 +18,22 @@
       </ion-item>
     </ion-col>
   </ion-row>
-  <ion-row  class="ion-margin-top">
-    <ion-title >
-      Lista de tareas
-    </ion-title>
+  <ion-row>    
     <ion-col size="12">
-      <ion-text class="ion-text-center ion-margin-top" color="medium" *ngIf="tasks.length==0">
+      <ion-text class="ion-text-center" color="medium" *ngIf="tasks ===undefined">
         <h2>No hay tareas agregadas</h2>
       </ion-text>
       <ion-list>
-        <ion-item-sliding *ngFor="let task of tasks;let i = index">
-          <ion-item>
-            <ion-label>{{i+1}}.- {{task.task}}</ion-label>
+        <ion-item-sliding *ngFor="let task of tasks;let i = index" >
+          <ion-item *ngIf="!task.completed">
+            <ion-label>{{task.task}}</ion-label>
             <ion-icon name="checkmark-done-outline" slot="end" *ngIf="task.completed"></ion-icon>    
           </ion-item>
-          <ion-item-options side="end">
-              <ion-item-option color="warning" (click)="completeTask(i)">
+          <ion-item-options side="end" *ngIf="!task.completed">
+              <ion-item-option color="warning" (click)="completeTask(task.id)">
                 <ion-icon name="checkbox-outline"></ion-icon>
               </ion-item-option>
-              <ion-item-option color="danger" (click)="removeTask(i)">
+              <ion-item-option color="danger" (click)="removeTask(task.id)">
                 <ion-icon name="trash-outline"></ion-icon>
               </ion-item-option>
           </ion-item-options>
