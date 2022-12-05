@@ -16,6 +16,7 @@ export class Tab2Page {
   public tasks: Task[];
   public task: string;
   public show = false;
+  public name = '';
 
   constructor(private taskService:TasksService,
     private toastController: ToastController,
@@ -31,6 +32,10 @@ export class Tab2Page {
         }
       })
     });
+    this.name = auth.getCurrentUser().displayName.toLowerCase().split(" ").slice(0,2).map(name => {
+      return name[0].toUpperCase() + name.slice(1);
+    }).join(' ');
+    
     
   }
 
