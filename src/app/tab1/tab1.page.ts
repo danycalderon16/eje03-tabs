@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import {  Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Task } from '../models/task';
 import { AuthService } from '../services/auth.service';
@@ -19,7 +20,7 @@ export class Tab1Page {
   constructor(private taskService: TasksService, 
     private toastController: ToastController, 
     private alertController: AlertController,
-    private fAuth:AngularFireAuth,
+    private router:Router,
     private auth:AuthService) {
     // this.tasks = this.taskService.getTasks();
     this.taskService.getTasks().subscribe(res => {
@@ -96,5 +97,12 @@ export class Tab1Page {
     // } else {
     //   this.tasks[pos].completed = true;
     // }
+  }
+
+  public logOut(){
+    this.auth.logOut().then(res =>{
+      console.log(res);
+      this.router.navigate(['..']);
+    });
   }
 }

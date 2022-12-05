@@ -9,15 +9,15 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 })
 export class AuthService {
 
-  private user:User;
+  private user: User;
   constructor(
     public afAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) { }
-  public async googleAuth():Promise<any> {
+  public async googleAuth(): Promise<any> {
     return this.authLogin(new GoogleAuthProvider());
   }
-  
+
   public authLogin(provider) {
     return this.afAuth
       .signInWithPopup(provider)
@@ -29,7 +29,7 @@ export class AuthService {
       });
   }
 
-  
+
   public async loginGoogle(): Promise<User> {
     try {
       const { user } = await this.afAuth.signInWithPopup(
@@ -55,11 +55,22 @@ export class AuthService {
       photoURL: user.photoURL,
     };
 
-    this.user = data; 
+    this.user = data;
     return userRef.set(data, { merge: true });
   }
 
-  public getCurrentUser():User{
+  public getCurrentUser(): User {
     return this.user;
+  }
+
+  public logOut(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.afAuth.signOut()
+        .then(result => {
+          resolve(result);
+        }).catch(err => {
+          reject(err);
+        });
+    });
   }
 }
