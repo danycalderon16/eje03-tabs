@@ -22,7 +22,6 @@ export class Tab1Page {
     private alertController: AlertController,
     private router:Router,
     private auth:AuthService) {
-    // this.tasks = this.taskService.getTasks();
     this.taskService.getTasks().subscribe(res => {
       this.tasks = res;
     });      
@@ -56,26 +55,17 @@ export class Tab1Page {
     await alert.present();
   }
 
-  async presentToast(position: 'top' | 'middle' | 'bottom', message: string) {
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string, time?:number ) {
     const toast = await this.toastController.create({
       message,
-      duration: 1500,
+      duration: time || 1500,
       position,
       cssClass: 'custom-toast'
     });
 
     await toast.present();
   }
-  async toastCompleted(position: 'top' | 'middle' | 'bottom', message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 1500,
-      position,
-      cssClass: 'custom-toast',
-    });
 
-    await toast.present();
-  }
   public addTask(){
     let count = this.tasks.length;
     const aux: Task = { task: this.task, completed: false }
@@ -90,19 +80,36 @@ export class Tab1Page {
   public completeTask(id: string) {
     console.log(this.tasks);
     this.taskService.completedTask(id).then(res=>{
-      this.toastCompleted('bottom', 'Tarea marcada como completada con éxito')
+      this.presentToast('bottom', 'Tarea marcada como completada con éxito')
     });
-    // if (this.tasks[pos].completed === true) {
-    //   this.toastCompleted('bottom', 'La tarea ya está marcada como completada')
-    // } else {
-    //   this.tasks[pos].completed = true;
-    // }
   }
 
-  public logOut(){
-    this.auth.logOut().then(res =>{
-      console.log(res);
-      this.router.navigate(['..']);
+  public async logOut(){
+    const alert = await this.alertController.create({
+      header: '¿Está seguro de salir de la sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+
+          },
+        },
+        {
+          text: 'Sí',
+          role: 'confirm',
+          handler: () => {
+            this.auth.logOut().then(res =>{
+              console.log(res);
+              this.router.navigate(['..']);
+            });
+            this.presentToast('bottom', 'Adios',300);
+          },
+        },
+      ],
     });
+
+    await alert.present();
+    
   }
 }
