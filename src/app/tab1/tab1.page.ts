@@ -23,14 +23,12 @@ export class Tab1Page {
     private router: Router,
     private auth: AuthService) {
     this.taskService.getTasks().subscribe(res => {
-      this.tasks = res;
+      this.tasks = res;      
     });
     this.name = auth.getCurrentUser().displayName.toLowerCase().split(" ").slice(0,2).map(name => {
       return name[0].toUpperCase() + name.slice(1);
     }).join(' ');
-    
-    // this.name = names.join(' ');
-    
+        
   }
 
   async removeTask(id: string) {
