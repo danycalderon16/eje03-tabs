@@ -67,7 +67,6 @@ export class Tab1Page {
   }
 
   public addTask(){
-    let count = this.tasks.length;
     const aux: Task = { task: this.task, completed: false }
     this.taskService.addTask(aux).then(res=>{                  
       this.task = "";
@@ -108,8 +107,6 @@ export class Tab1Page {
         },
       ],
     });
-
-    await alert.present();
-    
+    await alert.present();    
   }
 }

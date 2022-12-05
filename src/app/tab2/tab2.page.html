@@ -3,8 +3,14 @@
     <ion-title>
       Tareas
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logOut()">
+        SALIR
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content [fullscreen]="true">
   <ion-row  class="ion-margin-top">
@@ -24,6 +30,9 @@
           <ion-item-options side="end">
               <ion-item-option color="warning" (click)="incompleteTask(task.id)">
                 <ion-icon name="create-sharp"></ion-icon>
+              </ion-item-option>
+              <ion-item-option color="danger" (click)="removeTask(task.id)">
+                <ion-icon name="trash-outline"></ion-icon>
               </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
