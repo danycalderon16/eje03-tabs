@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Task } from '../models/task';
+import { AuthService } from '../services/auth.service';
 import { TasksService } from '../services/tasks.service';
 
 @Component({
@@ -14,12 +16,15 @@ export class Tab1Page {
   public tasks: Task[];
   public task: string;
 
-  constructor(private taskService: TasksService, private toastController: ToastController, private alertController: AlertController) {
+  constructor(private taskService: TasksService, 
+    private toastController: ToastController, 
+    private alertController: AlertController,
+    private fAuth:AngularFireAuth,
+    private auth:AuthService) {
     // this.tasks = this.taskService.getTasks();
     this.taskService.getTasks().subscribe(res => {
       this.tasks = res;
-    });  
-
+    });      
   }
 
   async removeTask(id:string) {

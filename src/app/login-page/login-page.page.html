@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Log In</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-sm="12" size-md="6" size-lg="3">
+        <ion-button class="btn-login" expand="block" (click)="onGoogleLogin()">
+          <ion-icon class="ion-padding-end" name="logo-google"></ion-icon>
+          <ion-text>
+            <p>Ingresa con Google</p>
+          </ion-text>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Task } from '../models/task';
 import { map } from "rxjs/operators";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs'
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class TasksService {
   private tasks: Task[] = [];
 
 
-  constructor(private firestore: AngularFirestore) {
+  constructor(private firestore: AngularFirestore,
+    private auth:AuthService) {
 
   }
 
@@ -21,7 +23,7 @@ export class TasksService {
   // }
 
   public getTasks(): Observable<Task[]> {
-    return this.firestore.collection('tasks').snapshotChanges().pipe(
+    return this.firestore.collection(`users/${this.auth.getCurrentUser().uid}/tasks`).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data() as Task;
@@ -35,7 +37,7 @@ export class TasksService {
   public async addTask(task: Task): Promise<any> {
     const id = new Date().valueOf().toString();
     return new Promise((resolve, reject) => {
-      this.firestore.collection('tasks').doc(id).set(task)
+      this.firestore.collection(`users/${this.auth.getCurrentUser().uid}/tasks`).doc(id).set(task)
         .then(result => {
           resolve(result);
         }).catch(err => {
@@ -46,7 +48,7 @@ export class TasksService {
 
   public removeTask(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.firestore.collection('tasks').doc(id).delete()
+      this.firestore.collection(`users/${this.auth.getCurrentUser().uid}/tasks`).doc(id).delete()
         .then(result => {
           resolve(result);
         }).catch(err => {
@@ -57,7 +59,7 @@ export class TasksService {
 
   public completedTask(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.firestore.collection('tasks').doc(id).update({ "completed": true })
+      this.firestore.collection(`users/${this.auth.getCurrentUser().uid}/tasks`).doc(id).update({ "completed": true })
         .then(result => {
           resolve(result);
         }).catch(err => {
@@ -67,7 +69,7 @@ export class TasksService {
   }
   public incompletedTask(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.firestore.collection('tasks').doc(id).update({ "completed": false })
+      this.firestore.collection(`users/${this.auth.getCurrentUser().uid}/tasks`).doc(id).update({ "completed": false })
         .then(result => {
           resolve(result);
         }).catch(err => {
