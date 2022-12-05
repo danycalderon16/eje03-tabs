@@ -106,7 +106,7 @@ export class Tab1Page {
               console.log(res);
               this.router.navigate(['..']);
             });
-            this.presentToast('bottom', 'Adios', 300);
+            this.presentToast('bottom',`Adios ${this.name}`, 300);
           },
         },
       ],

@@ -34,8 +34,7 @@ export class Tab2Page {
     });
     this.name = auth.getCurrentUser().displayName.toLowerCase().split(" ").slice(0,2).map(name => {
       return name[0].toUpperCase() + name.slice(1);
-    }).join(' ');
-    
+    }).join(' '); 
     
   }
 
@@ -74,7 +73,7 @@ export class Tab2Page {
               console.log(res);
               this.router.navigate(['..']);
             });
-            this.presentToast('bottom', 'Adios',300);
+            this.presentToast('bottom', `Adios ${this.name}`,400);
           },
         },
       ],

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -10,7 +11,8 @@ import { AuthService } from '../services/auth.service';
 export class LoginPagePage implements OnInit {
 
   constructor(private auth:AuthService,
-    private router:Router) { }
+    private router:Router,
+    private toastController:ToastController) { }
 
   ngOnInit() {
   }
@@ -19,7 +21,11 @@ export class LoginPagePage implements OnInit {
     try {
       const user = await this.auth.loginGoogle();
       if (user) {
-        this.router.navigate(['tabs'])       
+        const name = this.auth.getCurrentUser().displayName.toLowerCase().split(" ").slice(0,2).map(name => {
+          return name[0].toUpperCase() + name.slice(1);
+        }).join(' ');
+        this.router.navigate(['tabs']);
+        this.presentToast('bottom',`Hola ${name}`,500);
       }
     } catch (error) {
       console.log(error);
@@ -27,4 +33,14 @@ export class LoginPagePage implements OnInit {
   }
 
 
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string, time?: number) {
+    const toast = await this.toastController.create({
+      message,
+      duration: time || 1500,
+      position,
+      cssClass: 'custom-toast'
+    });
+
+    await toast.present();
+  }
 }
